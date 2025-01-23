@@ -7,15 +7,15 @@ pool:
 variables:
   - group: 'Blob-for-User1-Variables-Group'
 
-steps:
-# Checkout the repository containing the files to be deployed
-- checkout: self
+jobs:
+- job: CheckoutAndUpload
+  steps:
+  - checkout: self
 
-# Install Azure CLI
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'az_hasu'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az storage blob upload-batch -d $(AZURE_STORAGE_CONTAINER) -s $(Build.SourcesDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --connection-string $(AZURE_STORAGE_CONNECTION_STRING)
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'az_hasu'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az storage blob upload-batch -d $(AZURE_STORAGE_CONTAINER) -s $(Build.SourcesDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --connection-string $(AZURE_STORAGE_CONNECTION_STRING)
