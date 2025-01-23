@@ -14,7 +14,7 @@ steps:
 # Install Azure CLI
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'your_service_connection'
+    azureSubscription: 'az_hasu'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
