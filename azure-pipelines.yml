@@ -9,7 +9,7 @@ variables:
 
 steps:
 # Checkout the repository containing the files to be deployed
-- task: Checkout@1
+- checkout: self
 
 # Install Azure CLI
 - task: AzureCLI@2
