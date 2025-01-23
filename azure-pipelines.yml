@@ -1,0 +1,29 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: 'Blob-for-User1-Variables-Group'
+
+steps:
+
+# Checkout the repository containing the files to be deployed
+- task: Checkout@1
+
+# Install Azure CLI
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install azure-cli
+  displayName: 'Install Azure CLI'
+
+# Upload files to Azure Blob Storage
+- script: |
+    az storage blob upload-batch -d $(AZURE_STORAGE_CONTAINER) -s $(Build.SourcesDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --connection-string $(AZURE_STORAGE_CONNECTION_STRING)
+  displayName: 'Upload files to Azure Blob Storage'
