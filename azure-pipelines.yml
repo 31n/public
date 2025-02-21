@@ -4,18 +4,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  - group: 'Blob-for-User1-Variables-Group'
-
-jobs:
-- job: CheckoutAndUpload
-  steps:
-  - checkout: self
-
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'az_hasu'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az storage blob upload-batch -d $(AZURE_STORAGE_CONTAINER) -s $(Build.SourcesDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --acount-key $(AZURE_STORAGE_ACCOUNT_KEY)
+steps:
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/dist'
+    ArtifactName: 'blob'
+    publishLocation: 'Container'
